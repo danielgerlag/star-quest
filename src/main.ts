@@ -5,21 +5,22 @@ import { opening } from './campaign/opening';
 import { separation } from './episode/separation';
 import { playCinematic } from './cinematic';
 import type { Cinematic } from './cinematic';
-import type { Action, Dialogue, GameState, Hotspot, Verb } from './model';
+import type { Action, Dialogue, GameState, Hotspot } from './model';
 import { activeDialogue, chapterFor, meets, resolve, roomFor, startCampaign, validateCampaign, visibleHotspots } from './engine';
 import { SaveStore, encodeSave, parseSaveFile } from './saves';
 import type { SaveEnvelope, SaveSlot } from './saves';
 import { createPortrait, createSpaceTexture } from './art';
 import { GameScene } from './scene';
 import { ShipAudio } from './audio';
-import { escape, icon } from './icons';
+import { actionCursor, escape, icon } from './icons';
+import { cycleCursor, isTool, releaseItem, tools } from './controls';
+import type { CursorSelection, Tool } from './controls';
 
 const preferencesSchema = z.object({
   sound: z.boolean(), volume: z.number().min(0).max(1),
   reducedMotion: z.boolean(), highlights: z.boolean(), largeText: z.boolean(),
 });
 type Preferences = z.infer<typeof preferencesSchema>;
-type Tool = Verb | 'walk';
 const testingMode = new URLSearchParams(location.search).get('testing') === '1';
 
 const app = document.querySelector<HTMLDivElement>('#app');
@@ -71,16 +72,22 @@ app.innerHTML = `
       <main class="adventure-monitor">
         <div class="monitor-top"><div class="monitor-elbow"></div><span id="room-deck"></span><span class="monitor-line"></span><span id="condition"></span></div>
         <div class="room-heading"><div><span class="eyebrow">CURRENT LOCATION</span><h2 id="room-name"></h2></div><button class="turbolift-button" data-command="map">${icon('map')} <span id="travel-label">Turbolift</span> <kbd>M</kbd></button></div>
-        <div id="scene-frame" class="scene-frame">
+        <div id="classic-controls" class="classic-controls">
+          <button id="toolbar-toggle" class="toolbar-toggle" data-command="toolbar" aria-label="Action icons" aria-controls="action-toolbar" aria-expanded="false">${icon('use')} <span>ICON BAR <kbd>F2</kbd></span><small>RIGHT-CLICK TO CYCLE</small></button>
+          <div id="action-toolbar" class="verb-bar" role="toolbar" aria-label="Interaction tools">
+            ${tools.map((tool, i) => `<button data-command="tool" data-tool="${tool}" class="verb-button" aria-label="${tool[0].toUpperCase() + tool.slice(1)}" title="${tool[0].toUpperCase() + tool.slice(1)} (${i + 1})">${icon(tool)}<span>${tool[0].toUpperCase() + tool.slice(1)}</span><kbd>${i + 1}</kbd></button>`).join('')}
+            <button class="verb-button" data-command="inventory" aria-label="Open inventory" title="Inventory (I)">${icon('inventory')}<span>Inventory</span><kbd>I</kbd></button>
+            <button id="carried-item" class="verb-button carried-item" data-command="carried-item" disabled aria-label="No carried item" title="Select an item from inventory">${icon('inventory')}<span>Empty</span></button>
+            <button class="verb-button" data-command="menu" aria-label="Control panel" title="Mission menu (Esc)">${icon('settings')}<span>Game</span><kbd>Esc</kbd></button>
+          </div>
+        </div>
+        <div id="scene-frame" class="scene-frame" role="group" tabindex="-1" aria-label="Adventure scene">
           <div id="scene-mount" class="scene-mount" aria-hidden="true"></div>
           <div id="hotspots" class="hotspots" role="group" aria-label="People and objects in this room"></div>
           <div class="scene-vignette" aria-hidden="true"></div>
           <div id="location-tag" class="location-tag" aria-hidden="true"></div>
         </div>
-        <div class="interaction-line"><span id="selected-action"></span><span id="hover-label">Choose a person or object to examine.</span><button class="hotspot-toggle" data-command="highlight" title="Highlight hotspots (H)" aria-label="Highlight hotspots">${icon('look')}</button></div>
-        <div class="verb-bar" role="toolbar" aria-label="Interaction tools">
-          ${(['walk', 'look', 'talk', 'use', 'scan'] satisfies Tool[]).map((tool, i) => `<button data-command="tool" data-tool="${tool}" class="verb-button" aria-label="${tool[0].toUpperCase() + tool.slice(1)}" title="${tool[0].toUpperCase() + tool.slice(1)} (${i + 1})">${icon(tool)}<span>${tool[0].toUpperCase() + tool.slice(1)}</span><kbd>${i + 1}</kbd></button>`).join('')}
-        </div>
+        <div class="interaction-line"><span id="selected-action" role="status" aria-live="polite"></span><span id="hover-label">Choose a person or object to examine.</span><button class="hotspot-toggle" data-command="highlight" title="Highlight hotspots (H)" aria-label="Highlight hotspots">${icon('look')}</button></div>
         <div class="inventory-dock"><span class="dock-label">EQUIPMENT</span><div id="inventory-items"></div><button class="inventory-more" data-command="inventory" aria-label="Inspect inventory">${icon('inventory')}</button></div>
         <p id="room-description" class="room-description"></p>
         <details class="scene-index"><summary>Room contents <span>keyboard & touch alternative</span></summary><div id="scene-index-items"></div></details>
@@ -114,6 +121,11 @@ const panelContent = element('#panel-content', HTMLDivElement);
 const notification = element('#notification', HTMLDivElement);
 const continueButton = element('#continue-button', HTMLButtonElement);
 const importFile = element('#import-file', HTMLInputElement);
+const sceneFrame = element('#scene-frame', HTMLDivElement);
+const toolbarRegion = element('#classic-controls', HTMLDivElement);
+const toolbar = element('#action-toolbar', HTMLDivElement);
+const toolbarToggle = element('#toolbar-toggle', HTMLButtonElement);
+const mouseToolbar = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 761px)');
 const audio = new ShipAudio();
 const saves = new SaveStore(testingMode ? 'testing' : 'mission', adventure.storage);
 let preferences: Preferences = {
@@ -123,8 +135,7 @@ let preferences: Preferences = {
 let state: GameState | null = null;
 let resumeSave: SaveEnvelope | null = null;
 let scene: GameScene | null = null;
-let selectedTool: Tool = 'look';
-let selectedItem: string | null = null;
+let cursor: CursorSelection = { mode: 'look', item: null };
 let busy = false;
 let saveError = '';
 let notificationTimer = 0;
@@ -172,6 +183,7 @@ async function beginAudio(): Promise<void> {
 }
 
 function openPanel(eyebrow: string, title: string, body: string, className = ''): void {
+  setToolbarOpen(false);
   panelGeneration++;
   afterClose = null;
   panel.className = `panel-dialog ${className}`;
@@ -268,7 +280,13 @@ function activateGame(): void {
   shell.hidden = false;
   if (!scene) {
     scene = new GameScene(element('#scene-mount', HTMLElement), (x, y) => {
-      if (!busy && !panel.open) void scene?.walk(x, y);
+      if (!sceneInputAvailable() || !state) return;
+      sceneFrame.focus({ preventScroll: true });
+      if (cursor.mode === 'walk') void scene?.walk(x, y);
+      else if (cursor.mode === 'look') {
+        const room = roomFor(campaign, state);
+        openPanel('OBSERVATION', room.name, `<p>${escape(room.description)}</p>`);
+      } else notify('Choose a person or object for that action. Select Walk to move around.');
     });
   }
   scene.resize();
@@ -302,8 +320,7 @@ async function newCampaign(): Promise<void> {
   busy = true;
   try {
   state = startCampaign(campaign);
-  selectedTool = 'look';
-  selectedItem = null;
+  cursor = { mode: 'look', item: null };
   hintsShown.clear();
   if (panel.open) closePanel();
   await beginAudio();
@@ -319,7 +336,7 @@ function resume(stateToLoad: GameState): void {
   window.clearTimeout(notificationTimer);
   notification.classList.remove('visible');
   state = structuredClone(stateToLoad);
-  selectedItem = null;
+  cursor = releaseItem(cursor);
   if (panel.open) closePanel();
   void beginAudio();
   if (state.ending) showEnding();
@@ -334,7 +351,7 @@ function resume(stateToLoad: GameState): void {
 function render(): void {
   if (!state) return;
   const current = state;
-  if (selectedItem && !current.inventory.includes(selectedItem)) selectedItem = null;
+  if (cursor.item && !current.inventory.includes(cursor.item)) cursor = releaseItem(cursor);
   const chapter = chapterFor(campaign, current);
   const room = roomFor(campaign, current);
   const targets = visibleHotspots(campaign, current);
@@ -363,19 +380,13 @@ function render(): void {
   const targetLayer = element('#hotspots', HTMLElement);
   targetLayer.classList.toggle('highlight', preferences.highlights);
   targetLayer.innerHTML = targets.map((target) =>
-    `<button class="hotspot ${target.kind}" data-command="target" data-target="${escape(target.id)}" style="left:${target.x / 4.8}%;top:${target.y / 3}%;width:${target.width / 4.8}%;height:${target.height / 3}%" aria-label="${escape(`${selectedItem ? `Use ${campaign.items.find((item) => item.id === selectedItem)?.name ?? selectedItem} on` : selectedTool} ${target.label}`)}" title="${escape(target.label)}"><span class="hotspot-corner"></span><span class="hotspot-label">${escape(target.label)}</span></button>`).join('');
+    `<button class="hotspot ${target.kind}" data-command="target" data-target="${escape(target.id)}" style="left:${target.x / 4.8}%;top:${target.y / 3}%;width:${target.width / 4.8}%;height:${target.height / 3}%" title="${escape(target.label)}"><span class="hotspot-corner"></span><span class="hotspot-label">${escape(target.label)}</span></button>`).join('');
   element('#scene-index-items', HTMLElement).innerHTML = targets.map((target) => `<button data-command="target" data-target="${escape(target.id)}">${icon(target.kind === 'person' ? 'talk' : 'scan')}${escape(target.label)}</button>`).join('');
   element('#inventory-items', HTMLElement).innerHTML = current.inventory.map((id) => {
     const item = campaign.items.find((entry) => entry.id === id);
-    return item ? `<button class="inventory-item ${id === selectedItem ? 'selected' : ''}" data-command="equip" data-item="${escape(id)}" aria-label="Use ${escape(item.name)}" title="${escape(item.description)}">${icon(item.icon)}<span>${escape(item.name)}</span></button>` : '';
+    return item ? `<button class="inventory-item" data-command="equip" data-item="${escape(id)}" aria-label="Use ${escape(item.name)}" title="${escape(item.description)}">${icon(item.icon)}<span>${escape(item.name)}</span></button>` : '';
   }).join('');
-  document.querySelectorAll<HTMLButtonElement>('[data-command="tool"]').forEach((button) => {
-    const active = !selectedItem && button.dataset.tool === selectedTool;
-    button.classList.toggle('active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
-  const selected = selectedItem ? campaign.items.find((item) => item.id === selectedItem) : null;
-  element('#selected-action', HTMLElement).innerHTML = `${icon(selected?.icon ?? selectedTool)} ${escape(selected ? `Use ${selected.name}` : selectedTool[0].toUpperCase() + selectedTool.slice(1))}`;
+  renderControls();
   document.querySelector<HTMLButtonElement>('[data-command="highlight"]')?.setAttribute('aria-pressed', String(preferences.highlights));
   const player = campaign.speakers.find((speaker) => speaker.id === campaign.protagonist);
   if (!player) throw new Error('The campaign protagonist is not defined.');
@@ -422,15 +433,18 @@ async function dispatch(action: Action): Promise<void> {
 }
 
 async function interact(target: Hotspot): Promise<void> {
-  if (busy || !state || panel.open) return;
-  busy = true;
-  try { await scene?.walk(target.x + target.width / 2, target.y + target.height + 20); }
-  finally { busy = false; }
-  if (selectedTool === 'walk' && !selectedItem) return;
-  if (selectedItem) {
-    await dispatch({ type: 'item', item: selectedItem, target: target.id });
-  } else if (selectedTool !== 'walk') {
-    await dispatch({ type: 'interact', verb: selectedTool, target: target.id });
+  if (!sceneInputAvailable()) return;
+  const selection = cursor;
+  if (selection.mode === 'walk' || selection.mode === 'use' || selection.mode === 'item') {
+    busy = true;
+    try { await scene?.walk(target.x + target.width / 2, target.y + target.height + 20); }
+    finally { busy = false; }
+  }
+  if (selection.mode === 'walk') return;
+  if (selection.mode === 'item') {
+    await dispatch({ type: 'item', item: selection.item, target: target.id });
+  } else {
+    await dispatch({ type: 'interact', verb: selection.mode, target: target.id });
   }
 }
 
@@ -445,7 +459,7 @@ function showMap(): void {
 function showInventory(): void {
   if (!state) return;
   openPanel('PERSONAL EQUIPMENT', 'Inventory',
-    `<p class="muted">Select equipment, return to the ship, then choose its target. Your PADD is used to present collected evidence as well as access mission records.</p><div class="inventory-grid">${state.inventory.map((id) => campaign.items.find((item) => item.id === id)).filter((item) => item !== undefined).map((item) => `<article class="equipment-card"><div class="equipment-icon">${icon(item.icon)}</div><h3>${escape(item.name)}</h3><p>${escape(item.description)}</p><button class="button secondary" data-command="equip-panel" data-item="${escape(item.id)}">Use ${escape(item.name)}</button></article>`).join('')}</div>`);
+    `<p class="muted">Select equipment to carry it on the cursor, then click its target. Right-click cycles through actions and back to your carried item. The PADD presents collected evidence.</p><div class="inventory-grid">${state.inventory.map((id) => campaign.items.find((item) => item.id === id)).filter((item) => item !== undefined).map((item) => `<article class="equipment-card"><div class="equipment-icon">${icon(item.icon)}</div><h3>${escape(item.name)}</h3><p>${escape(item.description)}</p><button class="button secondary" data-command="equip-panel" data-item="${escape(item.id)}">Use ${escape(item.name)}</button></article>`).join('')}</div>`);
 }
 
 function showJournal(): void {
@@ -496,7 +510,8 @@ function showSettings(): void {
 function showHow(): void {
   openPanel('FIELD GUIDE', 'Think like a Starfleet officer',
     `<div class="how-intro"><span class="big-icon">${icon('delta')}</span><p>This is an adventure about observation and judgment. Explore the ship, listen to your crew, and use what you learn to give informed orders.</p></div>
-    <div class="control-guide"><div><kbd>1</kbd><strong>Walk</strong><span>Move around the room. You can also click the floor.</span></div><div><kbd>2</kbd><strong>Look</strong><span>Examine people and objects. Often your most useful first action.</span></div><div><kbd>3</kbd><strong>Talk</strong><span>Hear expertise, ask questions, and give informed orders.</span></div><div><kbd>4</kbd><strong>Use</strong><span>Operate consoles or interact with an object.</span></div><div><kbd>5</kbd><strong>Scan</strong><span>Look for readings that eyes alone cannot reveal.</span></div><div><kbd>I</kbd><strong>Inventory</strong><span>Select equipment, then click its target. Present evidence with your PADD.</span></div><div><kbd>M</kbd><strong>Turbolift</strong><span>Travel between the current chapter's locations.</span></div><div><kbd>J</kbd><strong>Journal</strong><span>Re-read evidence, conversations, and command decisions.</span></div><div><kbd>H</kbd><strong>Hotspots</strong><span>Reveal interactive labels. Keyboard Tab also finds them.</span></div></div>
+    <p>Move the pointer to the <strong>ICON BAR</strong> at the top of the scene to reveal the action icons. <strong>Right-click the scene</strong> to cycle Walk, Look, Talk, Use, Scan, and your carried item. Left-click performs the selected action; the small cross on the cursor marks its target.</p>
+    <div class="control-guide"><div><kbd>F2</kbd><strong>Icon bar</strong><span>Open the icons. Arrow keys move between buttons; Enter selects one. Touch and narrow screens keep the icons visible.</span></div><div><kbd>1</kbd><strong>Walk</strong><span>Select Walk, then click the floor or a destination in the room.</span></div><div><kbd>2</kbd><strong>Look</strong><span>Examine a person or object without walking. Click empty scenery for a room description.</span></div><div><kbd>3</kbd><strong>Talk</strong><span>Hear expertise, ask questions, and give informed orders.</span></div><div><kbd>4</kbd><strong>Use</strong><span>Walk over and operate a console or handle an object.</span></div><div><kbd>5</kbd><strong>Scan</strong><span>Look for readings that eyes alone cannot reveal.</span></div><div><kbd>I</kbd><strong>Inventory</strong><span>Select equipment to carry it on the cursor, then click its target. The carried-item icon remembers it when you change actions.</span></div><div><kbd>M</kbd><strong>Turbolift</strong><span>Travel between the current chapter's locations.</span></div><div><kbd>J</kbd><strong>Journal</strong><span>Re-read evidence, conversations, and command decisions.</span></div><div><kbd>H</kbd><strong>Hotspots</strong><span>Reveal interactive labels. Keyboard Tab also finds them.</span></div></div>
     <p class="note">There is no hidden timer. Look, read, and think at your own pace. Major commitments ask for confirmation. Every chapter has a saved checkpoint, and hints reveal one step at a time.</p><div class="dialog-actions"><button class="button primary" data-command="close">Understood ${icon('arrow')}</button></div>`);
 }
 
@@ -576,10 +591,61 @@ function showEnding(): void {
 }
 
 function selectTool(tool: string | undefined): void {
-  if (tool !== 'walk' && tool !== 'look' && tool !== 'talk' && tool !== 'use' && tool !== 'scan') return;
-  selectedTool = tool;
-  selectedItem = null;
-  render();
+  if (!isTool(tool)) throw new Error('This action icon is not available.');
+  cursor = { mode: tool, item: cursor.item };
+  setToolbarOpen(false);
+  renderControls();
+}
+
+function sceneInputAvailable(): boolean {
+  return Boolean(state && !shell.hidden && !busy && !document.querySelector('dialog[open]'));
+}
+
+function setToolbarOpen(open: boolean): void {
+  const hide = mouseToolbar.matches && !open;
+  if (hide && toolbar.contains(document.activeElement)) toolbarToggle.focus({ preventScroll: true });
+  toolbar.hidden = hide;
+  toolbarToggle.hidden = !mouseToolbar.matches;
+  toolbarToggle.setAttribute('aria-expanded', String(!hide));
+  if (toolbarToggle.hidden && document.activeElement === toolbarToggle) {
+    toolbar.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
+  }
+}
+
+function focusToolbar(): void {
+  setToolbarOpen(true);
+  const button = toolbar.querySelector<HTMLButtonElement>('[aria-pressed="true"]')
+    ?? toolbar.querySelector<HTMLButtonElement>('button:not(:disabled)');
+  button?.focus();
+}
+
+function renderControls(): void {
+  const held = campaign.items.find((item) => item.id === cursor.item);
+  const selected = cursor.mode === 'item' ? held : null;
+  const label = selected ? `Use ${selected.name}` : cursor.mode[0].toUpperCase() + cursor.mode.slice(1);
+  sceneFrame.style.setProperty('--action-cursor', actionCursor(selected?.icon ?? cursor.mode));
+  sceneFrame.dataset.cursor = cursor.mode;
+  element('#selected-action', HTMLElement).innerHTML = `${icon(selected?.icon ?? cursor.mode)} ${escape(label)}`;
+  toolbar.querySelectorAll<HTMLButtonElement>('[data-command="tool"]').forEach((button) => {
+    const active = button.dataset.tool === cursor.mode;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  const carried = element('#carried-item', HTMLButtonElement);
+  carried.disabled = !held;
+  carried.classList.toggle('active', cursor.mode === 'item');
+  carried.setAttribute('aria-pressed', String(cursor.mode === 'item'));
+  carried.setAttribute('aria-label', held ? `Use carried item: ${held.name}` : 'No carried item');
+  carried.title = held ? `Use ${held.name}` : 'Select an item from inventory';
+  carried.innerHTML = `${icon(held?.icon ?? 'inventory')}<span>${held ? 'Carried' : 'Empty'}</span>`;
+  document.querySelectorAll<HTMLButtonElement>('#inventory-items button').forEach((button) => {
+    const active = cursor.mode === 'item' && cursor.item === button.dataset.item;
+    button.classList.toggle('selected', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  document.querySelectorAll<HTMLButtonElement>('.hotspot').forEach((button) => {
+    button.setAttribute('aria-label', `${selected ? `${label} on` : cursor.mode} ${button.title}`);
+  });
 }
 
 function validSlot(value: string | undefined): SaveSlot | null {
@@ -619,8 +685,7 @@ async function handleCommand(button: HTMLButtonElement): Promise<void> {
       const prepared = adventure.testing.chapterStart(Number(button.dataset.chapter), options);
       busy = true;
       try {
-        selectedTool = 'look';
-        selectedItem = null;
+        cursor = { mode: 'look', item: null };
         hintsShown.clear();
         resume(prepared);
         await saveCurrent(true);
@@ -680,16 +745,30 @@ async function handleCommand(button: HTMLButtonElement): Promise<void> {
       else await dispatch(action);
       break;
     }
-    case 'tool': selectTool(button.dataset.tool); break;
+    case 'toolbar':
+      if (sceneInputAvailable()) focusToolbar();
+      break;
+    case 'tool':
+      if (sceneInputAvailable()) selectTool(button.dataset.tool);
+      break;
+    case 'carried-item':
+      if (sceneInputAvailable() && cursor.item) {
+        cursor = { mode: 'item', item: cursor.item };
+        setToolbarOpen(false);
+        renderControls();
+      }
+      break;
     case 'equip':
     case 'equip-panel': {
+      if (command === 'equip' && !sceneInputAvailable()) break;
       const item = button.dataset.item;
       if (item && state?.inventory.includes(item)) {
-        selectedItem = selectedItem === item ? null : item;
-        selectedTool = 'use';
+        cursor = command === 'equip' && cursor.mode === 'item' && cursor.item === item
+          ? { mode: 'use', item } : { mode: 'item', item };
         if (command === 'equip-panel') closePanel();
-        render();
-        if (selectedItem) notify('Equipment selected. Choose a person or object to use it on.');
+        setToolbarOpen(false);
+        renderControls();
+        if (cursor.mode === 'item') notify('Equipment on cursor. Choose its target; right-click to change actions.');
       }
       break;
     }
@@ -766,6 +845,39 @@ document.addEventListener('pointerover', (event) => {
   const target = event.target.closest<HTMLButtonElement>('.hotspot');
   if (target) element('#hover-label', HTMLElement).textContent = target.title;
 });
+sceneFrame.addEventListener('contextmenu', (event) => {
+  if (!sceneInputAvailable() || (event instanceof PointerEvent && event.pointerType === 'touch')) return;
+  event.preventDefault();
+  cursor = cycleCursor(cursor);
+  setToolbarOpen(false);
+  renderControls();
+});
+toolbarRegion.addEventListener('pointerenter', (event) => {
+  if (event.pointerType === 'mouse' && mouseToolbar.matches && sceneInputAvailable()) setToolbarOpen(true);
+});
+toolbarRegion.addEventListener('pointerleave', () => {
+  if (!toolbar.contains(document.activeElement)) setToolbarOpen(false);
+});
+toolbar.addEventListener('focusout', (event) => {
+  if (!(event.relatedTarget instanceof Node && toolbar.contains(event.relatedTarget)) && !toolbarRegion.matches(':hover')) {
+    setToolbarOpen(false);
+  }
+});
+toolbar.addEventListener('keydown', (event) => {
+  if (!sceneInputAvailable()) return;
+  const buttons = [...toolbar.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')];
+  const current = buttons.findIndex((button) => button === document.activeElement);
+  let next: number;
+  if (event.key === 'ArrowRight') next = (current + 1) % buttons.length;
+  else if (event.key === 'ArrowLeft') next = (current - 1 + buttons.length) % buttons.length;
+  else if (event.key === 'Home') next = 0;
+  else if (event.key === 'End') next = buttons.length - 1;
+  else return;
+  event.preventDefault();
+  buttons[next]?.focus();
+});
+mouseToolbar.addEventListener('change', () => setToolbarOpen(false));
+setToolbarOpen(false);
 document.addEventListener('focusin', (event) => {
   if (event.target instanceof HTMLButtonElement && event.target.classList.contains('hotspot')) {
     element('#hover-label', HTMLElement).textContent = event.target.title;
@@ -784,15 +896,17 @@ document.addEventListener('change', (event) => {
 });
 document.addEventListener('keydown', (event) => {
   if (event.ctrlKey || event.metaKey || event.altKey || event.target instanceof HTMLInputElement) return;
+  if (busy || document.querySelector('.cinematic-dialog[open]')) return;
   if (event.key === 'Escape') {
     if (panel.open) return;
     if (state && !shell.hidden) { event.preventDefault(); showMenu(); }
     return;
   }
-  if (!state || panel.open || shell.hidden || busy) return;
+  if (!sceneInputAvailable()) return;
   const key = event.key.toLowerCase();
-  const tools: Record<string, Tool> = { '1': 'walk', '2': 'look', '3': 'talk', '4': 'use', '5': 'scan' };
-  if (tools[key]) { event.preventDefault(); selectTool(tools[key]); }
+  const shortcuts: Record<string, Tool> = { '1': 'walk', '2': 'look', '3': 'talk', '4': 'use', '5': 'scan' };
+  if (shortcuts[key]) { event.preventDefault(); selectTool(shortcuts[key]); }
+  else if (key === 'f2') { event.preventDefault(); focusToolbar(); }
   else if (key === 'm') { event.preventDefault(); showMap(); }
   else if (key === 'j') { event.preventDefault(); showJournal(); }
   else if (key === 'i') { event.preventDefault(); showInventory(); }

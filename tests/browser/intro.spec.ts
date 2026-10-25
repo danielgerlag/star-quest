@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { saveBytes } from './helpers';
+import { saveBytes, selectTool } from './helpers';
 
 async function openTitle(page: Page, reducedMotion = false): Promise<void> {
   await page.goto('/?adventure=original');
@@ -114,11 +114,11 @@ test('replay preserves save bytes and pauses independently for user choice and h
   await page.getByRole('button', { name: 'look Chair', exact: true }).click();
   await expect(page.locator('.dialogue-text')).toContainText('PICARD');
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
-  await page.getByRole('button', { name: 'Talk', exact: true }).click();
+  await selectTool(page, 'talk');
   await page.getByRole('button', { name: 'talk Worf', exact: true }).click();
   await expect(page.locator('.dialogue-text')).toContainText('witness');
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
-  await page.getByRole('button', { name: 'Use', exact: true }).click();
+  await selectTool(page, 'use');
   await page.getByRole('button', { name: 'use Command seal', exact: true }).click();
   await expect(page.locator('#objective-count')).toHaveText('1/4');
   await page.getByRole('button', { name: 'Continue', exact: true }).click();

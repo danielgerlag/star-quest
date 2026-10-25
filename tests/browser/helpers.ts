@@ -1,6 +1,13 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import type { Action } from '../../src/model';
+import type { Tool } from '../../src/controls';
+
+export async function selectTool(page: Page, tool: Tool): Promise<void> {
+  const toolbar = page.getByRole('toolbar', { name: 'Interaction tools' });
+  if (!await toolbar.isVisible()) await page.getByRole('button', { name: 'Action icons', exact: true }).hover();
+  await toolbar.locator(`[data-command="tool"][data-tool="${tool}"]`).click();
+}
 
 export async function expectPaintedRoom(page: Page): Promise<void> {
   await expect.poll(() => page.locator('#scene-mount canvas').evaluate((element) => {
@@ -56,11 +63,11 @@ export async function act(page: Page, action: Action): Promise<void> {
     await expect(page.locator('#panel')).not.toBeVisible();
     await expectPaintedRoom(page);
   } else if (action.type === 'interact') {
-    await page.locator(`[data-command="tool"][data-tool="${action.verb}"]`).click();
+    await selectTool(page, action.verb);
     await page.locator(`#hotspots [data-target="${action.target}"]`).click();
     await expect(page.locator('#panel')).toBeVisible();
   } else if (action.type === 'item') {
-    await page.locator('[data-command="tool"][data-tool="look"]').click();
+    await selectTool(page, 'look');
     await page.locator(`#inventory-items [data-item="${action.item}"]`).click();
     await page.locator(`#hotspots [data-target="${action.target}"]`).click();
     await expect(page.locator('#panel')).toBeVisible();

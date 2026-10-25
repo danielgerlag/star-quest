@@ -105,10 +105,10 @@ kbd { font: 10px "SFMono-Regular", Consolas, monospace; border: 1px solid #53607
 .turbolift-button svg { width: 15px; height: 15px; }
 .turbolift-button kbd { margin-left: 5px; }
 .scene-frame { aspect-ratio: 8 / 5; position: relative; width: 100%; background: #070c15; overflow: hidden; isolation: isolate; }
-.scene-mount { width: 100%; height: 100%; }
+.scene-mount { width: 100%; height: 100%; cursor: var(--action-cursor, crosshair); }
 .scene-mount canvas { display: block; image-rendering: pixelated; }
 .hotspots { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-.hotspot { position: absolute; pointer-events: auto; background: transparent; border: 1px solid transparent; padding: 0; border-radius: 3px; cursor: crosshair; }
+.hotspot { position: absolute; pointer-events: auto; background: transparent; border: 1px solid transparent; padding: 0; border-radius: 3px; cursor: var(--action-cursor, crosshair); }
 .hotspot:hover, .hotspot:focus-visible { background: #83c6d30c; border-color: #9bdeed88; z-index: 2; }
 .hotspot:focus-visible { outline-offset: 1px; }
 .hotspot-corner { position: absolute; inset: -1px; opacity: 0; border: 1px solid #9bdeed55; transition: opacity .15s; }
@@ -125,14 +125,24 @@ kbd { font: 10px "SFMono-Regular", Consolas, monospace; border: 1px solid #53607
 .hotspot-toggle { background: none; color: #839ab4; padding: 2px 4px; }
 .hotspot-toggle svg { width: 17px; height: 17px; }
 .hotspot-toggle[aria-pressed="true"] { color: var(--cyan); }
-.verb-bar { display: flex; border-top: 1px solid #28384d; border-bottom: 1px solid #28384d; padding: 5px 8px; gap: 4px; }
-.verb-button { flex: 1; min-width: 0; padding: 9px 6px; display: flex; gap: 8px; justify-content: center; align-items: center; color: #8497ae; background: transparent; border: 1px solid transparent; border-radius: 3px; }
-.verb-button span { font-size: 10px; }
-.verb-button svg { width: 19px; height: 19px; }
-.verb-button kbd { border: none; padding: 0; font-size: 8px; color: #546a85; }
-.verb-button:hover { background: #18283d; }
-.verb-button.active { background: #e7bb8015; border-color: #e7bb8040; color: var(--amber); }
-.verb-button.active kbd { color: #a78c6a; }
+.classic-controls { position: relative; z-index: 6; background: #172337; }
+.toolbar-toggle { display: flex; width: 100%; height: 26px; align-items: center; gap: 7px; padding: 0 10px; background: #172337; color: #b9c6d9; text-align: left; font: 8px "SFMono-Regular", Consolas, monospace; letter-spacing: 1px; border-bottom: 1px solid #3e4e65; }
+.toolbar-toggle > svg { width: 13px; height: 13px; color: var(--amber); }
+.toolbar-toggle kbd { margin-left: 6px; padding: 0 3px; font-size: 7px; }
+.toolbar-toggle small { margin-left: auto; font-size: 7px; color: #8299b4; }
+.verb-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 5px; gap: 4px; background: #344257; border: 1px solid #73819a; box-shadow: 0 3px 0 #020812; }
+.verb-button { position: relative; min-width: 0; min-height: 54px; padding: 6px 2px; display: flex; flex-direction: column; gap: 3px; justify-content: center; align-items: center; color: #c1cddd; background: #233248; border: 2px solid; border-color: #697a91 #111c2b #111c2b #697a91; border-radius: 1px; }
+.verb-button span { font: 9px "SFMono-Regular", Consolas, monospace; }
+.verb-button svg { width: 24px; height: 24px; }
+.verb-button kbd { position: absolute; top: 2px; right: 3px; border: none; padding: 0; font-size: 7px; color: #95a6bd; }
+.verb-button:hover { background: #3a4b64; }
+.verb-button.active { background: #574735; border-color: #0e1826 #a68b66 #a68b66 #0e1826; color: #ffe1a3; }
+.verb-button.active kbd { color: #d2b58a; }
+.verb-button:focus-visible { outline-offset: -3px; }
+.carried-item { border-style: dashed; }
+@media (hover: hover) and (pointer: fine) and (min-width: 761px) {
+  .verb-bar { position: absolute; top: 100%; left: 0; right: 0; grid-template-columns: repeat(8, minmax(0, 1fr)); }
+}
 .inventory-dock { display: flex; align-items: center; gap: 10px; min-height: 45px; padding: 5px 12px; background: #0a1422; border-bottom: 1px solid #203047; }
 .dock-label { font-size: 7px; color: #667d98; letter-spacing: 1px; }
 #inventory-items { flex: 1; min-width: 0; display: flex; gap: 5px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #475870 transparent; }

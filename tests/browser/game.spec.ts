@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { walkthrough } from '../../src/campaign/walkthrough';
-import { act, closeReading, start } from './helpers';
+import { act, closeReading, selectTool, start } from './helpers';
 
 test('Enterprise-D main bridge artwork and integrated controls', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1080 });
@@ -16,16 +16,16 @@ test('Enterprise-D main bridge artwork and integrated controls', async ({ page }
   await clickRoom(240, 163);
   await expect(page.locator('.dialogue-text')).toContainText('PICARD');
   await closeReading(page);
-  await page.getByRole('button', { name: 'Talk', exact: true }).click();
+  await selectTool(page, 'talk');
   await page.getByRole('button', { name: 'talk Worf', exact: true }).click();
   await expect(page.locator('.dialogue-text')).toContainText('witness');
   await closeReading(page);
-  await page.getByRole('button', { name: 'Use', exact: true }).click();
+  await selectTool(page, 'use');
   await clickRoom(110, 167);
   await expect(page.locator('#objective-count')).toHaveText('1/4');
   await expect(page.locator('.dialogue-text')).toContainText('Worf witnesses the transfer');
   await closeReading(page);
-  await page.getByRole('button', { name: 'Look', exact: true }).click();
+  await selectTool(page, 'look');
   await clickRoom(353, 83);
   await expect(page.locator('.dialogue-text')).toContainText('A narrow burn');
 });

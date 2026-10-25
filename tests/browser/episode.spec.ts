@@ -6,7 +6,7 @@ import { chapterStart } from '../../src/episode/testing';
 import { separation } from '../../src/episode/separation';
 import { episodeAdventure, newlyEarnedFilms } from '../../src/adventures';
 import { resolve, startCampaign } from '../../src/engine';
-import { act, closeReading, expectPaintedRoom, saveBytes, start } from './helpers';
+import { act, closeReading, expectPaintedRoom, saveBytes, selectTool, start } from './helpers';
 import { chapterActions, pixels, savedMission, testChapter } from './episode-helpers';
 
 async function reachSeparation(page: Page, beforeLast?: () => Promise<void>, reducedMotion = true): Promise<void> {
@@ -123,11 +123,11 @@ test('the surface survey uses painted foundations, natural bedrock, and a coring
   await click(92, 200);
   await expect(page.locator('.dialogue-text')).toContainText('Reinforcement rods');
   await closeReading(page);
-  await page.getByRole('button', { name: 'Scan', exact: true }).click();
+  await selectTool(page, 'scan');
   await click(180, 265);
   await expect(page.locator('.dialogue-text')).toContainText('residual subspace band');
   await closeReading(page);
-  await page.getByRole('button', { name: 'Use', exact: true }).click();
+  await selectTool(page, 'use');
   await click(60, 249);
   await expect(page.locator('#inventory-items [data-item="e1-core-sample"]')).toBeVisible();
   await expect(page.locator('#objective-count')).toHaveText('1/4');

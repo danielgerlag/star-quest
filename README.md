@@ -44,6 +44,8 @@ Story actions save before playback. Reloading a saved mission does not replay it
 
 ## Take your first steps
 
+The controls follow the Sierra icon-bar style. Move the mouse to **ICON BAR** above the scene to reveal the buttons. Right-click inside the scene to cycle **Walk → Look → Talk → Use → Scan**, then your carried item if you have selected one. Left-click performs the selected action. The small cross on the action-shaped cursor marks the target.
+
 1. Select **Look**, then select a person or object in the scene.
 2. Select **Talk** to consult an officer. Select **Use** to operate a station.
 3. Select an inventory item, then select its target. The PADD presents evidence collected in the journal.
@@ -52,8 +54,11 @@ Story actions save before playback. Reloading a saved mission does not replay it
 
 Investigation and reading have no time limit. Major commitments ask for confirmation. Different choices can require different procedures later.
 
+Select **Walk** before clicking the floor to move. **Look** on empty scenery describes the room instead. Select equipment from **Inventory** or the quick equipment dock to carry it on the cursor. Switching to another action keeps that item in the icon bar's **Carried** slot.
+
 | Key | Control |
 | --- | --- |
+| `F2` | Open the icon bar; use arrow keys and `Enter` to select |
 | `1` | Walk |
 | `2` | Look |
 | `3` | Talk |
@@ -65,7 +70,7 @@ Investigation and reading have no time limit. Major commitments ask for confirma
 | `H` | Hotspot labels |
 | `Esc` | Close the current panel or open the mission menu |
 
-For touch or keyboard play, expand **Room contents** below the scene. Settings include larger text, reduced motion, hotspot labels, and audio controls.
+On touchscreens and narrow windows, the same icons stay visible above the scene. For touch or keyboard play, **Room contents** below the scene also lists every target. Settings include larger text, reduced motion, hotspot labels, and audio controls.
 
 ## Keep a mission backup
 

@@ -20,7 +20,7 @@ class EnterpriseScene extends Phaser.Scene {
   create(): void {
     this.ready = true;
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      this.floorClick(pointer.x, pointer.y);
+      if (pointer.leftButtonDown()) this.floorClick(pointer.x, pointer.y);
     });
     if (this.view) this.present(this.view);
   }

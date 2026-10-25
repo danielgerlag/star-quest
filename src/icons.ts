@@ -30,6 +30,18 @@ export function icon(name: string): string {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] ?? paths.star}</svg>`;
 }
 
+const cursors = new Map<string, string>();
+
+export function actionCursor(name: string): string {
+  const cached = cursors.get(name);
+  if (cached) return cached;
+  const shapes = paths[name] ?? paths.star;
+  const image = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none" color="#ffe1a3" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(8 8)"><g stroke="#07111d" stroke-width="4.5">${shapes}</g><g stroke="#ffe1a3" stroke-width="1.8">${shapes}</g></g><path d="M3 0v6M0 3h6" stroke="#07111d" stroke-width="3"/><path d="M3 0v6M0 3h6" stroke="#ffe1a3"/></svg>`;
+  const cursor = `url("data:image/svg+xml,${encodeURIComponent(image)}") 3 3, crosshair`;
+  cursors.set(name, cursor);
+  return cursor;
+}
+
 export function escape(value: string): string {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
