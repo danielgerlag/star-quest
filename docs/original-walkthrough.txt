@@ -1,0 +1,248 @@
+STAR QUEST: THE BURDEN OF COMMAND
+Original alternate-timeline walkthrough
+
+SPOILER WARNING
+This file reveals every required puzzle, all four irreversible decisions, and
+all three outcomes. The staged objective hints in the game are less explicit.
+
+This is an original, unofficial Star Trek: The Next Generation fan adventure.
+The premise diverges after Picard's capture. It does not recreate an episode
+script. Riker is the sole playable captain; specialists perform their own jobs.
+
+HOW TO READ THESE INSTRUCTIONS
+Look, Talk, Scan, and Use mean the four interface verbs. "Apply" means select
+the named inventory item and click the named target. Travel between this
+chapter's rooms with the map. Read dialogue and select its named choice when
+instructed. No hidden timer runs while you investigate. Looking and talking
+out of order cannot strand the game; revisit a specialist after new evidence.
+Inventory acquisitions are repeatable and no critical item is consumed.
+
+CHAPTER 1: THE EMPTY CHAIR
+
+1. Main Bridge: Look at Chair. Talk to Worf, then Use Command seal. This
+   establishes witnessed local command without treating a remote message as
+   the ship's captain. Look at Damage board: its burned seam and repeated
+   all-clear are evidence that the picture is stale.
+2. Primary Power Gallery: Scan Bypass and Talk to Geordi. Apply Command PADD
+   to Repair desk. The bridge's old snapshot and the real bypass measurement
+   agree once their times are aligned. Geordi handles the actual repair.
+3. Marigold Docking Vestibule: Look at Manifest to obtain it. Scan Crate.
+   The crate contains power-responsive filaments; do not connect it. Talking
+   to Vale and Troi gives useful context but is not a substitute for a scan.
+4. Sickbay Intake: Look at Birth record and Talk to Crusher. Apply Command
+   PADD to Records. Alternatively, apply the Manifest or Tender medical report
+   after obtaining both records and observing the wristband. Twelve people
+   departed and a child was born: thirteen arrived. This explains the life
+   signs, not the suspicious cargo.
+5. Look at Bed board. Talk to Crusher again after comparing the records and
+   scanning the crate. She authorizes separate cargo containment and humane
+   passenger screening. Return to the tender and Use Crate.
+6. Main Bridge: Talk to Shelby. Choose:
+   - Bring passengers aboard: occupy the isolation annex, keep the shuttle.
+   - Keep the tender under shuttle escort: keep the annex, commit the shuttle.
+   Neither option abandons the passengers. The choice cannot be reversed
+   after it has been recorded. Use Chair to proceed.
+
+CHAPTER 2: BORROWED AUTHORITY
+
+1. Captain's Ready Room: Look at Dispatch cylinder and Scan Stamp reader.
+   Physical receipt is 03:19, although the order claims an issue time of 03:23.
+2. Emergency Relay Alcove: Look at Antenna feed. It is physically unplugged.
+   Scan Thermal logger: disconnection occurred at 03:11 on an independent
+   clock. Talk to Geordi, then Use Optical kit to obtain the reusable isolator.
+3. Computer Archive Annex: Talk to Data. Apply Dispatch cylinder to Signature
+   reader. The signer is real, but the transport header was regenerated here.
+   Apply Command PADD to Route comparator. The three records establish a
+   replay from the local emergency cache, not a new external instruction.
+   You receive Origin proof that other captains can reproduce themselves.
+4. Observation Lounge: Apply Origin proof to Traffic model. This is required:
+   it explains the practical tradeoff before you choose a relay disposition.
+5. Ready Room: Talk to Shelby. Choose:
+   - Cut: remove the suspect carrier and its noise, but lose automatic
+     navigation. Chapter 3 requires three visual bearings.
+   - Supervised: retain a one-way reader and navigation samples, but perform
+     active noise rejection. You receive a Supervised noise profile.
+   Use Command desk to proceed. The later warning transmitter is separate:
+   cutting the incoming relay does not prevent narrow-beam rescue traffic.
+
+CHAPTER 3: THE SCATTERED FLEET
+
+1. Stellar Cartography: Talk to Data. Follow the route actually chosen:
+   CUT RELAY:
+     Look at Split star. Scan Dead buoy. Travel to Rescue Signal Array,
+     Look at Mast crescent, then Use Sight shutter. Three independent
+     measurements establish fleet positions with honest uncertainty margins.
+   SUPERVISED RELAY:
+     Travel to Rescue Signal Array. Scan Carrier reader for the current
+     interference, then apply Supervised noise profile to that reader.
+     The stored profile alone is not enough: the noise has shifted.
+2. Salvage Receiving Hold: Look at Salvage pallet, Scan Load bench, and Talk
+   to Geordi. Use Release console. You receive a Certified power cell and
+   a service allocation. The crushed weapons scrap is not needed.
+3. Rescue Signal Array: Apply Origin proof to Carrier reader. With verified
+   fleet positions and real support to offer, the warning can be sent to the
+   independent captains. This works with either relay choice.
+4. Aft Evacuation Bay: Look at Frosted hatch and Talk to Crusher. Apply
+   Certified power cell to Beacon sockets. Technicians warm the iced contacts
+   safely and recharge the cell afterward; it remains available.
+5. Apply Command PADD to Lane board. Patient acceleration limits, fleet
+   uncertainty margins, and live beacon tests define a protected lane.
+6. Stellar Cartography: Use Rendezvous. The four captains offer limited,
+   specific aid. You obtain Fleet support agreement and proceed.
+
+CHAPTER 4: A HUMAN SIGNAL
+
+1. Long-Range Sensor Gallery: Scan Respiratory trace, Look at Repair shutters,
+   and Talk to Data. Apply Fleet support agreement to Parallax desk. The
+   independent observer resolves one living body inside a maintenance cavity.
+   This is a rescue location, not a command channel to the Collective.
+2. Medical Logistics Annex: Look at Annex beds and Talk to Crusher. She
+   provides Medical isolation kit and the practical receiving protocol.
+   Follow the earlier tender commitment:
+   PASSENGERS ABOARD:
+     Look at Partition plan. Apply Command PADD to Medical dispatch. Wayfarer
+     supplies nurses for a proper overflow ward; the passengers are not
+     simply removed from their beds to make room for Picard.
+   TENDER ESCORTED:
+     Look at Medical dispatch to verify the shuttle is still committed.
+     Apply Fleet support agreement there. Morrow explicitly assumes the
+     independent receiving-buffer duty; the shuttle keeps its promise.
+3. Isolated Transport Room: Scan Diagnostic lead and Talk to O'Brien. Apply
+   Optical isolator to Diagnostic lead. Apply Medical isolation kit to
+   Receiving pad. Look at Dwell dial, then Use it to arm the bounded transport.
+   Arming does not start a hidden countdown.
+4. Quiet Isolation Room: Look at Patient monitor and Talk to Troi. If this
+   is your first conversation, Talk to her again to open the decision:
+   MEDICAL:
+     Protect Picard's clinical baseline. He has the better chance of coherent
+     recovery. A later precision attack needs a fleet probe and reserve cover.
+   TACTICAL:
+     Take one bounded sample of local repair timing. It reduces the later
+     reconnaissance burden, but Picard suffers injured memory and uncertain
+     long-term recovery. It does not yield universal Borg controls.
+   Every final strategy remains available under either choice.
+5. Transport Room: Use Receiving pad to authorize the chosen extraction.
+6. Isolation Room: Talk to Picard. His response differs materially according
+   to the contact protocol. No tactical interrogation is required.
+7. Sensor Gallery: Use Parallax desk to proceed.
+
+CHAPTER 5: ANOTHER WAY TO FIGHT
+
+All three plans are tested before you choose. Reservations are conditional:
+testing alternatives does not spend all three sets of resources.
+
+1. Materials Analysis Laboratory: Scan Armor sample and Talk to Data.
+   Apply Origin proof to Control model to reject the false universal-control
+   hypothesis. Authentic instructions cannot command unknown physical systems.
+2. At Seam bench:
+   - With medical contact, apply Fleet support agreement. The exterior probe
+     and reserve shielding are explicitly pledged if Precision is selected.
+   - With tactical contact, apply Limited tactical sample.
+   A single moving seam can be exploited once; repeated identical fire fails.
+3. Auxiliary Planning Bridge: Talk to Worf for local-clock firing doctrine.
+4. Fleet Liaison Wardroom: Look at Formation chart. Apply Fleet support
+   agreement to Firing model. The two-pass displacement rehearsal succeeds
+   without inventing a third pass for the damaged Sable. Talk to Crusher for
+   the dependent evacuation protocol.
+5. Separation Service Hangar: Look at Tow model and Talk to Geordi. Apply
+   Certified power cell to Tow model. The physical rehearsal demonstrates a
+   guided, empty engineering hull blocking a turn. Fleet fire must still force
+   that turn and destroy the exposed drive structure. No living pilot stays.
+6. Scan Headcount board. Apply Marigold manifest to Evacuation desk. The birth,
+   live count, and receiving teams reconcile. Earlier medical and escort
+   commitments stay in force. Dependents reach the protected fleet refuge.
+7. Planning Bridge: Look at Asset board, then apply Command PADD there.
+   Talk to Worf again for the cross-specialist rehearsal and abort conditions.
+8. Use Decision console. Choose one tested strategy:
+   - Precision: best chance to retain the Enterprise. Spend observer cover,
+     plus the pledged probe and reserve shielding after medical contact.
+   - Fleet: robust staggered displacement fire. Expose damaged allies and
+     commit Enterprise's propulsion margin. Expect casualties and tows.
+   - Sacrifice: evacuate and separate the engineering hull. Save the crew
+     aboard the saucer, but lose Enterprise as a functioning starship.
+   This choice is irreversible. Use Decision console again to proceed.
+
+CHAPTER 6: THE BURDEN OF COMMAND
+
+The three plans require different physical execution, not a single ending
+button. Follow your selected plan, then complete the common confirmation.
+
+PRECISION PATH
+1. Final Power Control: Look at Power grid and Talk to Data. Apply Command
+   PADD to Phase bench. Medical contact spends the pledged unmanned probe and
+   shield cover; tactical contact uses its limited map with a fresh passive
+   check. Neither substitutes a successful old rehearsal for a current reading.
+2. Independent Signal Control: Scan Lane aperture, Talk to O'Brien, then apply
+   Fleet support agreement to Aiming station. Two independent observers
+   confirm the phase solution and the civilian exclusion boundary.
+3. Final Approach Bridge: Look at Engagement plot and Talk to Worf. Use
+   Command control. The staggered seam strike breaks the drive trunk and the
+   fleet finishes disabled sections outside the inhabited lanes.
+
+FLEET PATH
+1. Independent Signal Control: Scan Lane aperture and Look at Pass assignments.
+   Talk to O'Brien, then apply Fleet support agreement to Pass assignments.
+   Captains acknowledge local-clock passes and their own abort conditions.
+2. Final Power Control: Look at Power grid and Talk to Geordi. Apply Certified
+   power cell to Power grid. The cell validates the transition; ship reserves
+   actually power the attack. Medical power remains protected.
+3. Final Approach Bridge: Look at Engagement plot and Talk to Worf. Use
+   Command control. The two-pass displacement attack breaks the approach.
+   Enterprise loses propulsion and Sable is battered; no third pass is ordered.
+
+SACRIFICE PATH
+1. Casualty Coordination Room: Look at Emergency lockers and Talk to Crusher.
+   Apply Marigold manifest to Casualty monitor. The live crew roster and
+   independent scan account for every repair worker and transport operator.
+   The engineering hull is empty before separation is authorized.
+2. Final Power Control: Scan Separation clutch and Talk to Geordi. Apply
+   Command PADD to Separation clutch. Geordi performs controlled separation;
+   Riker commands from the saucer reserve bridge, not the sacrificed hull.
+3. Independent Signal Control: Look at Lane aperture to observe the wake,
+   then Scan it to verify the civilian boundary. Talk to O'Brien and apply
+   Fleet support agreement to Aiming station. The guidance line has an
+   independent solution and rejects unverified replacement commands.
+4. Final Approach Bridge: Look at Engagement plot and Talk to Worf. Use
+   Command control. Fleet fire forces a turn, the empty hull jams the wake,
+   and the fleet strikes the exposed drive lattice. No crew member is left
+   behind as a guidance component.
+
+COMMON FINAL CONFIRMATION
+1. Casualty Coordination Room: Scan Casualty monitor after execution. Talk to
+   Crusher. Apply Command PADD to Earth channel. Surface stations and orbital
+   observers verify safety independently of your targeting display.
+2. Final Approach Bridge: Use Command control again to close the combat log.
+   Before confirmation, repeated Use does not fire a second attack.
+
+OUTCOMES
+Recovery / A Future Still Ours:
+  Precision plus medical contact. Earth is saved, Enterprise can return under
+  reduced propulsion, Earth's orbital services remain intact, the fleet
+  retains rescue capacity, and Picard has begun coherent recovery. The
+  external probe and reserve cover were not free.
+Costly Victory / The Names We Bring Home:
+  Precision plus tactical contact: Earth and more ships are protected, but
+  Picard's memory injury is a lasting, uncertain cost.
+  Any Fleet strategy: Earth is saved, wounded crews need continuing care,
+  Enterprise and Sable require tows, and two uncrewed Earth defense platforms
+  need replacement. Civilian habitats and the surface are intact. Picard's
+  state follows the prior contact decision rather than being reset by battle.
+Last Command / The Last Command of the Enterprise:
+  Any Sacrifice strategy. Earth is saved and the accounted-for crew survives,
+  but Enterprise is no longer a functioning starship. Picard's care continues
+  with the actual consequences of the chosen contact protocol. Earth's
+  habitats and defense platforms survive; two outer approach corridors close
+  for an extended wreckage clearance operation.
+
+The tender's care, the relay procedure, Picard's condition, the ship's fate,
+and the fleet's capacity remain distinct recorded outcomes. There is no
+unavoidable bad-ending trap and no secret universal Borg kill switch.
+
+REPRODUCIBLE TEST FIXTURE
+src/campaign/walkthrough.ts exports walkthrough(options?), returning only
+normal travel, interact, inventory-item, and dialogue-choice actions.
+Options are evacuation=aboard|escort, relay=cut|supervised,
+contact=medical|tactical, strategy=precision|fleet|sacrifice.
+All 2 x 2 x 2 x 3 combinations are playable from a fresh game. The default is
+aboard / cut / medical / precision. The fixture neither sets facts directly
+nor bypasses the user interface's action contract.

@@ -1,0 +1,12 @@
+classification	requirement	acceptance
+requested	Complete browser adventure across six chapters	All chapters reachable and finishable through the same actions exposed by the player interface
+requested	Riker and Enterprise-D in an alternate Borg crisis	Original campaign content with three persistent primary commitments and three playable final operations
+requested	Sierra-inspired point-and-click exploration	Walkable illustrated rooms; Look, Talk, Use, Scan, equipment, evidence, and procedures
+requested	Delightful original presentation	Distinct room artwork, differentiated portraits, responsive interface, sound, and inspected live screenshots
+requested	Serious QA and self-play	Legal-action route tests, real browser full playthroughs, save/reload, negative cases, and independent review
+inferred	Local save durability and user-controlled backups	IndexedDB autosave, chapter checkpoint, three manual slots, validated export/import, and visible failures
+inferred	Keyboard and touch access	Semantic scene controls, room-content list, shortcuts, larger text, and reduced motion
+inferred	Self-contained local delivery	No accounts, analytics, external media, or application backend; production build and localhost server
+estimate	Five-to-seven-hour first-play target	Not a measured duration; cannot verify human playtime from an automated action replay
+deferred	Full voice acting, multiplayer, realtime combat and universal adventure editor	Explicitly excluded in the accepted design
+deferred	Public deployment and franchise distribution permissions	No publication or external deployment is authorized

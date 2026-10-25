@@ -1,0 +1,180 @@
+STAR QUEST: THE BEST OF BOTH WORLDS
+Complete spoiler walkthrough
+
+This route chooses Delegate, Close, and Paced. All eight combinations reach the episode ending.
+Keep a conversation open when the next step is Choose. Otherwise close its reading panel.
+Confirm irreversible orders when prompted.
+Close each completed event conversation to play its movie. Pause, skip, or use reduced-motion stills.
+Cutscenes on the title screen and mission menu replays all six movies without changing saves.
+Scan and using the inventory Tricorder are interchangeable. Optional Look and Talk actions add context.
+Alternate method choices have their own three-level hints in Captain's orders.
+The original alternate-timeline guide is in docs/original-walkthrough.txt.
+
+
+CHAPTER 1: A Colony Missing
+Jouret IV has not fallen silent. It has been taken.
+
+1. Look Colony basin.
+2. Look Severed foundation.
+3. Scan Exposed bedrock.
+4. Use Sample clamp.
+5. Transport > Survey Laboratory.
+6. Scan Reference basalt.
+7. Use Residue core on Spectrometer.
+8. Turbolift > Observation Lounge.
+9. Talk Hanson.
+10. Use Tractor analysis on Threat table.
+11. Talk Shelby.
+12. Turbolift > Captain’s Ready Room.
+13. Talk Picard.
+14. Use Command PADD on Watch assignments.
+15. Turbolift > Observation Lounge.
+16. Use Shelby’s adaptation brief on Threat table.
+17. Talk Shelby.
+18. Choose "Delegate the countermeasure team".
+19. Talk Hanson.
+20. Turbolift > Captain’s Ready Room.
+21. Use Watch assignments.
+
+CHAPTER 2: A Moving Frequency
+Break the tractor lock. Buy time for one untested weapon.
+
+1. Scan Tactical board.
+2. Turbolift > Tactical Laboratory.
+3. Talk Shelby.
+4. Use Beam recording on Spectrum bench.
+5. Use Rotation program on Emitter sequencer.
+6. Turbolift > Main Bridge.
+7. Use Tactical board.
+8. Scan Helm station.
+9. Use Nebula course on Helm station.
+10. Turbolift > Main Engineering.
+11. Talk Geordi.
+12. Scan Power distribution.
+13. Use Deflector schematic on Power distribution.
+14. Use Shunt locker.
+15. Turbolift > Deflector Control.
+16. Look Waveguide.
+17. Use Induction shunt on Waveguide.
+18. Use Alignment console.
+19. Turbolift > Main Bridge.
+20. Use Captain’s station.
+
+Picard abduction: "The last order" plays after you close the conversation. 33 seconds; skippable.
+
+CHAPTER 3: The Captain’s Knowledge
+A rescue attempt. One prepared shot. No clean answer.
+
+1. Use Command chair.
+2. Turbolift > Away-team Control.
+3. Look Survey feed.
+4. Scan Node telemetry.
+5. Use Node spectrum on Targeting uplink.
+6. Use Survey feed.
+7. Use Transporter lock.
+8. Turbolift > Main Bridge.
+9. Use Hailing station.
+10. Turbolift > Deflector Power Gallery.
+11. Scan Coolant manifold.
+12. Talk Geordi.
+13. Use Thermal envelope on Charge regulator.
+14. Turbolift > Main Bridge.
+15. Use Deflector fire control.
+16. Choose "Fire the main deflector".
+
+Deflector attack: "The deflector gambit" plays after you close the conversation. 24 seconds; skippable.
+17. Scan Return telemetry.
+18. Turbolift > Captain’s Ready Room.
+19. Use Fleet communications.
+20. Talk Shelby.
+21. Turbolift > Main Bridge.
+22. Use Fleet rendezvous orders on Helm repeater.
+23. Use Command chair.
+
+CHAPTER 4: After Wolf 359
+Picard knows our playbook. Write a different one.
+
+1. Look Ruined Melbourne.
+2. Scan Distress echoes.
+3. Talk Data.
+4. Use Wreck echo filter on Search sweep.
+5. Scan Search sweep.
+6. Turbolift > Ready Room.
+7. Talk Guinan.
+8. Use Command PADD on Tactical sketch.
+9. Turbolift > Main Bridge.
+10. Use Borg channel.
+11. Scan Borg channel.
+12. Talk Shelby.
+13. Choose "Close shadow approach".
+14. Turbolift > Separation Control.
+15. Scan Impulse feeds.
+16. Talk Geordi.
+17. Use Command PADD on Impulse feeds.
+18. Use Locutus position fix on Section formation.
+19. Use Mating collar.
+20. Turbolift > Main Bridge.
+21. Use Command chair.
+
+Saucer separation: "Two ships. One crew." plays after you close the conversation. 26 seconds; skippable.
+
+CHAPTER 5: Inside the Screen
+The diversion is loud. The rescue must be quiet.
+
+1. Look Earthward track.
+2. Scan Antimatter screen.
+3. Turbolift > Stardrive Shuttlebay.
+4. Talk Worf.
+5. Use Screen timing profile on Shuttle course.
+6. Turbolift > Transporter Control.
+7. Scan Return pad.
+8. Talk O'Brien.
+9. Use Command PADD on Return pad.
+10. Turbolift > Stardrive Battle Bridge.
+11. Use Antimatter screen.
+12. Use Shuttle mission.
+13. Scan Shuttle mission.
+14. Use Local barrier waveform on Shuttle mission.
+15. Use Shuttle mission.
+
+Shuttle rescue: "Bring him home" plays after you close the conversation. 31 seconds; skippable.
+16. Turbolift > Stardrive Medical.
+17. Scan Patient monitor.
+18. Talk Crusher.
+19. Use Neural coupler on Interface cradle.
+20. Talk Data.
+21. Choose "Paced neural samples".
+22. Use Interface cradle.
+
+CHAPTER 6: A Place to Rest
+A guarded command can fail where an ordinary need succeeds.
+
+1. Scan Neural monitor.
+2. Use Command PADD on Neural monitor.
+3. Turbolift > Neural Diagnostics.
+4. Use Command-system probe.
+5. Turbolift > Stardrive Medical.
+6. Talk Locutus.
+7. Turbolift > Neural Diagnostics.
+8. Use Regeneration trace on Regeneration index.
+9. Use Routine rehearsal.
+10. Turbolift > Stardrive Battle Bridge.
+11. Scan Earth approach.
+12. Use Command chair.
+13. Scan Earth approach.
+14. Use Command PADD on Command chair.
+15. Use Command chair.
+
+Cube destruction: "The Collective falls silent" plays after you close the conversation. 24 seconds; skippable.
+16. Scan Docking control.
+17. Use Command PADD on Docking control.
+18. Use Docking control.
+
+Enterprise rejoining: "One ship again" plays after you close the conversation. 25 seconds; skippable.
+19. Turbolift > Recovery Lounge.
+20. Scan Recovery monitor.
+21. Talk Picard.
+22. Talk Shelby.
+23. Use Captain’s log.
+
+Earth is safe. Saucer and stardrive rejoin. Picard recovers aboard the Enterprise.

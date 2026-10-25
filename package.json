@@ -1,0 +1,29 @@
+{
+  "name": "star-quest",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "npm run build && playwright test --project=chromium --project=webkit",
+    "test:firefox": "npm run build && playwright test --project=firefox",
+    "report": "node scripts/campaign-report.mjs",
+    "walkthrough": "node scripts/walkthrough.mjs",
+    "check": "npm test && npm run test:e2e"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.12",
+    "vitest": "^3.2.4"
+  }
+}

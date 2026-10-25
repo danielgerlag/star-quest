@@ -1,0 +1,25 @@
+{
+  "campaign": "best-of-both-worlds",
+  "chapters": 6,
+  "locations": 24,
+  "roomArtDesigns": 13,
+  "roomArtAndAtmosphereCombinations": 17,
+  "objectives": 24,
+  "hotspots": 96,
+  "illustratedProps": 65,
+  "builtInRoomFixtures": 20,
+  "propArtDesigns": 10,
+  "authoredInteractions": 288,
+  "evidenceEntries": 58,
+  "equipment": 19,
+  "speakers": 12,
+  "endings": 1,
+  "authoredWordsIncludingOptionalTextAndHints": 15387,
+  "testedMainRouteCombinations": 8,
+  "routeActions": {
+    "minimum": 130,
+    "maximum": 130
+  },
+  "contentErrors": [],
+  "humanPlaytime": "Not measured. Automated action replays do not measure first-time player duration."
+}
