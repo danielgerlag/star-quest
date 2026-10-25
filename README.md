@@ -21,6 +21,16 @@ The game needs no account or external service. All artwork and sound are produce
 
 The original alternate-timeline adventure and its three endings remain available under **Original adventure / old saves**, or at **http://127.0.0.1:4173/?adventure=original**. Its saves have not been migrated or replaced.
 
+## Play on GitHub Pages
+
+Open **https://danielgerlag.github.io/star-quest/**. No backend or account is required.
+
+The workflow in `.github/workflows/pages.yml` deploys pushes to `main`. It checks the game rules, builds the game, and exercises the build beneath `/star-quest/` before publishing only `dist`. You can also run **Deploy game to GitHub Pages** manually from the repository's **Actions** tab. Pages uses **GitHub Actions** as its deployment source.
+
+Vite emits relative asset URLs, so the same build works at the site root or a repository subpath. To repeat the project-path check locally, run `npm run test:pages`. It uses an isolated preview on port `4174`.
+
+Localhost and GitHub Pages have separate browser storage. **Export current mission** from your local game's save menu, then **Import save** on the hosted site to keep your progress. Saves remain local to each browser and do not sync through GitHub.
+
 ## Watch the sequences
 
 Six animated sequences follow their story events:

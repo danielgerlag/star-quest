@@ -28,7 +28,7 @@ if (!app) throw new Error('The application mount is missing.');
 const adventure = (() => {
   try { return adventureFor(new URLSearchParams(location.search).get('adventure')); }
   catch (error) {
-    app.innerHTML = `<main role="alert"><h1>Adventure unavailable</h1><p>${escape(error instanceof Error ? error.message : 'The adventure could not be selected.')}</p><a href="/">Open the episode adventure</a> · <a href="/?adventure=original">Open the original adventure</a></main>`;
+    app.innerHTML = `<main role="alert"><h1>Adventure unavailable</h1><p>${escape(error instanceof Error ? error.message : 'The adventure could not be selected.')}</p><a href="./">Open the episode adventure</a> · <a href="./?adventure=original">Open the original adventure</a></main>`;
     throw error;
   }
 })();

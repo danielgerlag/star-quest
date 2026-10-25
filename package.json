@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "npm run build && playwright test --project=chromium --project=webkit",
+    "test:pages": "npm run build && playwright test --config=playwright.pages.config.ts",
     "test:firefox": "npm run build && playwright test --project=firefox",
     "report": "node scripts/campaign-report.mjs",
     "walkthrough": "node scripts/walkthrough.mjs",
